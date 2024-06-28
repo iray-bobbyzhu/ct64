@@ -2,7 +2,7 @@
 #define _MANAGERBASE_H
 
 #include "dataframe.h"
-#include "messagequeue.h"
+#include "dataframequeue.h"
 
 #include <thread>
 
@@ -10,17 +10,18 @@ class Manager
 {
 public:
     Manager(DataFrame::Node this_node, DataFrame::Module this_module);
-    virtual ~Manager();
+    virtual ~Manager() = default;
 
     void EnqueueFrame(DataFrame &frame);
-    void SendMessage(uint8_t priority, uint8_t two_way, DataFrame::Node rx_node, DataFrame::Module rx_module, uint8_t command, std::vector<uint64_t> contents);
-    void SendLoPriority(DataFrame::Node rx_node, DataFrame::Module rx_module, uint8_t command, std::vector<uint64_t> contents);
-    void SendHiPriority(DataFrame::Node rx_node, DataFrame::Module rx_module, uint8_t command, std::vector<uint64_t> contents);
-    void SendNotification(DataFrame::Node rx_node, DataFrame::Module rx_module, uint8_t command, std::vector<uint64_t> contents);
+    void SendMessage(uint8_t priority, uint8_t two_way, DataFrame::Node rx_node, DataFrame::Module rx_module, uint8_t command, std::vector<uint8_t> &contents);
     void SendMessage(uint8_t priority, uint8_t two_way, DataFrame::Node rx_node, DataFrame::Module rx_module, uint8_t command, uint64_t contents);
+    void SendLoPriority(DataFrame::Node rx_node, DataFrame::Module rx_module, uint8_t command, std::vector<uint8_t> &contents);
     void SendLoPriority(DataFrame::Node rx_node, DataFrame::Module rx_module, uint8_t command, uint64_t content);
+    void SendHiPriority(DataFrame::Node rx_node, DataFrame::Module rx_module, uint8_t command, std::vector<uint8_t> &contents);
     void SendHiPriority(DataFrame::Node rx_node, DataFrame::Module rx_module, uint8_t command, uint64_t content);
+    void SendNotification(DataFrame::Node rx_node, DataFrame::Module rx_module, uint8_t command, std::vector<uint8_t> &contents);
     void SendNotification(DataFrame::Node rx_node, DataFrame::Module rx_module, uint8_t command, uint64_t content);
+    void StopManager();
 
 protected:
     void DequeueLoPriority();

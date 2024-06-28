@@ -38,19 +38,15 @@ public:
 
     bool Empty()
     {
+        std::lock_guard<std::mutex> lock(m_mtx);
         return m_queue.empty();
     }
 
     void StopWait()
     {
+        std::lock_guard<std::mutex> lock(m_mtx);
         m_stop_waiting = true;
         m_cv.notify_all();
-    }
-
-    void Clear()
-    {
-        std::queue<T> empty_queue;
-        std::swap(m_queue, empty_queue);
     }
 
 private:

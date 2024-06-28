@@ -32,6 +32,7 @@ public:
 
     uint32_t GetCanId();
     uint8_t GetCommand();
+    uint8_t GetLength();
     DataFrame::Module GetTxModule();
     DataFrame::Module GetRxModule();
     DataFrame::Node GetRxNode();
@@ -45,6 +46,7 @@ public:
 
     void SetCanId(uint32_t can_id);
     void SetCommand(uint8_t command);
+    void SetLength(uint8_t length);
     void SetTxModule(uint8_t module);
     void SetRxModule(uint8_t module);
     void SetRxNode(uint8_t node);
@@ -78,6 +80,8 @@ private:
         };
     };
 
+    uint8_t m_length;
+
     /***********************************************************************************************************
      * can_frame.data[8]:	 [7]        [6]        [5]        [4]        [3]        [2]        [1]        [0]
      *          m_data64: b63...b56, b55...b48, b47...b40, b39...b32, b31...b24, b23...b16, b15...b08, b07...b00
@@ -86,23 +90,21 @@ private:
 
     union
     {
-        uint8_t m_data8[CAN_MAX_DLEN];
+        uint8_t m_data8[8];
         uint64_t m_data64;
     };
 };
 
-struct CMDCODE
-{
-    static const uint32_t XRY_START = 0x02;
-    const uint32_t XRY_STOP = 0x03;
-    const uint32_t XRY_PREPARE = 0x04;
-    const uint32_t XRY_EXPOSE = 0x05;
-    const uint32_t XRY_RESET = 0x06;
-    const uint32_t XRY_ABORT = 0x07;
-    const uint32_t XRY_SKIP = 0x08;
-    const uint32_t XRY_WARMUP = 0x0a;
-    const uint32_t XRY_SEASON = 0x0b;
-    const uint32_t XRY_FILCAL = 0x0c;
-    const uint32_t XRY_ESTIMATE = 0x0d;
-};
+#define CMD_XRA_START 0x02
+#define CMD_XRA_STOP 0x03
+#define CMD_XRA_PREPARE 0x04
+#define CMD_XRA_EXPOSE 0x05
+#define CMD_XRA_RESET 0x06
+#define CMD_XRA_ABORT 0x07
+#define CMD_XRA_SKIP 0x08
+#define CMD_XRA_WARMUP 0x0a
+#define CMD_XRA_SEASON 0x0b
+#define CMD_XRA_FILCAL 0x0c
+#define CMD_XRA_ESTIMATE 0x0d
+
 #endif
